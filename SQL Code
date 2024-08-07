@@ -1,0 +1,180 @@
+# Target SQL Business Case Study
+
+## Overview
+
+This repository contains a detailed SQL-based business case study for analyzing e-commerce data from Target in Brazil. The analysis spans data from 2016 to 2018 and covers various aspects of customer behavior, sales trends, and economic impact.
+
+## Table of Contents
+
+1. [Dataset Import and Exploratory Analysis](#dataset-import-and-exploratory-analysis)
+2. [In-depth Exploration](#in-depth-exploration)
+   - E-commerce Growth Trend
+   - Customer Purchase Time Analysis
+3. [Evolution of E-commerce Orders](#evolution-of-e-commerce-orders)
+   - Monthly Orders by States
+   - Distribution of Customers
+4. [Economic Impact](#economic-impact)
+   - Cost Analysis
+   - Price and Freight Value
+5. [Sales, Freight, and Delivery Time Analysis](#sales-freight-and-delivery-time-analysis)
+6. [Payment Type Analysis](#payment-type-analysis)
+7. [Recommendations](#recommendations)
+
+## Dataset Import and Exploratory Analysis
+
+### Data Type of Columns:
+
+```sql
+SELECT column_name, data_type
+FROM `Target.INFORMATION_SCHEMA.COLUMNS`
+WHERE table_name = 'customers';
+```
+
+### Time Period for Data:
+
+```sql
+SELECT MIN(order_purchase_timestamp) AS first_transaction_date,
+       MAX(order_purchase_timestamp) AS last_transaction_date
+FROM `Target.orders`;
+```
+
+### Customer Locations:
+
+```sql
+SELECT COUNT(DISTINCT customer_city) AS total_cities,
+       COUNT(DISTINCT customer_state) AS total_states
+FROM `Target.customers` c
+JOIN `Target.orders` o ON c.customer_id = o.customer_id;
+```
+
+## In-depth Exploration
+
+### E-commerce Growth Trend:
+
+```sql
+SELECT EXTRACT(YEAR FROM order_purchase_timestamp) AS yearoforder,
+       COUNT(DISTINCT order_id) AS no_of_orders
+FROM `Target.orders`
+GROUP BY yearoforder
+ORDER BY yearoforder;
+```
+
+### Customer Purchase Time Analysis:
+
+```sql
+SELECT COUNT(*) AS purchase_count,
+       CASE
+           WHEN order_purchase BETWEEN '03:00:00' AND '06:00:00' THEN 'Dawn'
+           WHEN order_purchase BETWEEN '06:00:00' AND '12:00:00' THEN 'Morning'
+           WHEN order_purchase BETWEEN '12:00:00' AND '17:00:00' THEN 'Afternoon'
+           ELSE 'Night'
+       END AS purchase_time
+FROM (SELECT *, EXTRACT(TIME FROM order_purchase_timestamp) AS order_purchase
+      FROM `Target.orders`) time_stamp
+GROUP BY purchase_time
+ORDER BY purchase_count;
+```
+
+## Evolution of E-commerce Orders
+
+### Monthly Orders by States:
+
+```sql
+SELECT EXTRACT(MONTH FROM o.order_purchase_timestamp) AS month,
+       COUNT(o.order_id) AS order_id,
+       c.customer_state
+FROM `Target.orders` AS o
+JOIN `Target.customers` AS c ON o.customer_id = c.customer_id
+GROUP BY month, c.customer_state
+ORDER BY month;
+```
+
+### Distribution of Customers:
+
+```sql
+SELECT DISTINCT c.customer_state,
+       COUNT(DISTINCT c.customer_id) AS number_of_customers
+FROM `Target.customers` c
+RIGHT JOIN `Target.orders` o ON c.customer_id = o.customer_id
+GROUP BY c.customer_state;
+```
+
+## Economic Impact
+
+### Cost Analysis:
+
+```sql
+WITH cte AS (
+    SELECT ROUND(SUM(payment_value), 2) AS payment_sum_2017
+    FROM `Target.orders` ord
+    INNER JOIN `Target.payments` pay ON ord.order_id = pay.order_id
+    WHERE EXTRACT(YEAR FROM order_purchase_timestamp) = 2017
+      AND EXTRACT(MONTH FROM order_purchase_timestamp) BETWEEN 1 AND 8
+) x
+CROSS JOIN (
+    SELECT ROUND(SUM(payment_value), 2) AS payment_sum_2018
+    FROM `Target.orders` ord
+    INNER JOIN `Target.payments` pay ON ord.order_id = pay.order_id
+    WHERE EXTRACT(YEAR FROM order_purchase_timestamp) = 2018
+      AND EXTRACT(MONTH FROM order_purchase_timestamp) BETWEEN 1 AND 8
+) y
+GROUP BY payment_sum_2017, payment_sum_2018;
+```
+
+### Price and Freight Value:
+
+```sql
+SELECT c.customer_state,
+       ROUND(SUM(oi.price + oi.freight_value), 4) AS total_price,
+       ROUND(AVG(oi.price + oi.freight_value), 4) AS avg_price
+FROM `Target.order_items` oi
+JOIN `Target.orders` o ON o.order_id = oi.order_id
+JOIN `Target.customers` c ON c.customer_id = o.customer_id
+GROUP BY c.customer_state;
+```
+
+## Sales, Freight, and Delivery Time Analysis
+
+### Delivery Time Calculation:
+
+```sql
+SELECT DISTINCT order_id,
+       EXTRACT(DATE FROM order_purchase_timestamp) AS Purchase_date,
+       EXTRACT(DATE FROM order_delivered_carrier_date) AS Delivery_Carrier_Date,
+       EXTRACT(DATE FROM order_estimated_delivery_date) AS Estimated_Delivery_Date,
+       (EXTRACT(DAY FROM order_delivered_carrier_date) - EXTRACT(DAY FROM order_purchase_timestamp)) AS pur_delivery_days,
+       (EXTRACT(DAY FROM order_delivered_carrier_date) - EXTRACT(DAY FROM order_estimated_delivery_date)) AS diff_est_delivery
+FROM `Target.orders`
+WHERE order_status = 'delivered';
+```
+
+## Payment Type Analysis
+
+### Monthly Orders by Payment Type:
+
+```sql
+SELECT DISTINCT payment_type,
+       EXTRACT(MONTH FROM order_purchase_timestamp) AS month,
+       COUNT(*) AS order_count
+FROM `Target.payments` pay
+INNER JOIN `Target.orders` ord ON pay.order_id = ord.order_id
+GROUP BY month, payment_type
+ORDER BY month;
+```
+
+### Orders Based on Payment Installments:
+
+```sql
+SELECT p.payment_installments,
+       COUNT(DISTINCT o.order_id) AS orders_count
+FROM `Target_sql.payments` p
+INNER JOIN `Target_sql.orders` o ON p.order_id = o.order_id
+WHERE payment_installments >= 1
+GROUP BY payment_installments
+ORDER BY payment_installments;
+```
+
+
+# Conclusion
+
+This case study provides comprehensive insights into the e-commerce trends, customer behavior, and economic impact in Brazil for Target. The SQL queries and detailed analysis offer valuable recommendations for improving sales and customer engagement.
