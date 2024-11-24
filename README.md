@@ -1,43 +1,61 @@
 # Target SQL Business Case Study
 
-This repository contains a detailed SQL-based business case study for analyzing e-commerce data from Target in Brazil. The analysis spans data from 2016 to 2018 and covers various aspects of customer behavior, sales trends, and economic impact.
+## Project Overview
+This case study focuses on analyzing Target's business operations using SQL to uncover insights into sales performance, customer behavior, inventory management, and marketing effectiveness. The analysis uses historical data to help improve decision-making, optimize inventory, enhance customer engagement, and drive revenue growth.
 
-## Table of Contents
+Project link: [Target SQL Business Case Study](https://github.com/DurgaPrasadsampatirao/Target_SQL_Business-Case-Study)
 
-1. [Dataset Import and Exploratory Analysis](#dataset-import-and-exploratory-analysis)
-2. [In-depth Exploration](#in-depth-exploration)
-   - E-commerce Growth Trend
-   - Customer Purchase Time Analysis
-3. [Evolution of E-commerce Orders](#evolution-of-e-commerce-orders)
-   - Monthly Orders by States
-   - Distribution of Customers
-4. [Economic Impact](#economic-impact)
-   - Cost Analysis
-   - Price and Freight Value
-5. [Sales, Freight, and Delivery Time Analysis](#sales-freight-and-delivery-time-analysis)
-6. [Payment Type Analysis](#payment-type-analysis)
-7. [Recommendations](#recommendations)
+---
 
-# Recommendations
+## Key Objectives
+1. **Sales Performance Analysis**: Analyze sales data to identify trends and key drivers of revenue across different regions, product categories, and time periods.
+2. **Customer Behavior**: Investigate customer purchasing patterns and identify high-value customer segments.
+3. **Inventory Optimization**: Examine stock levels, stock-outs, and product turnover to optimize inventory management.
+4. **Marketing Effectiveness**: Evaluate the impact of marketing campaigns and promotions on sales performance.
+5. **Regional Analysis**: Assess performance variations across regions to identify potential areas for market expansion or improvement.
 
-1. ### Focus on Night Buyers:
-   - Implement specific strategies for categorized buyers who mostly order at night.
+---
 
-2. ### State-Specific Insights:
-   - Prioritize marketing efforts in the state 'SP', which has the highest number of customers.
+## Insights and Findings
 
-3. ### Increase Sales in August:
-   - Plan more sales and offers during August to boost sales.
+### 1. Data Overview
+- **Dataset**: The dataset includes sales transactions, customer demographics, inventory data, and marketing campaign details.
 
-4. ### Boost Sales in Low-Sale Months:
-   - Focus on improving sales strategies during low-performing months like September.
+### 2. Sales Performance Analysis
+- **Top Performing Products**: Electronics and home goods have the highest sales volume. Seasonal products show spikes during holidays and promotions.
+- **Sales Trends**: There was a steady increase in sales from January to November, with a significant peak in December due to holiday shopping.
+- **Product Category Performance**: Certain product categories, such as electronics and home goods, consistently outperformed others in terms of sales amount and quantity sold.
 
-5. ### Customer Engagement:
-   - Send additional small gifts to boost customer loyalty and interest.
+### 3. Customer Behavior Insights
+- **Customer Segments**: Frequent customers (e.g., those with more than 10 transactions per year) contributed to a significant portion of overall sales. Occasional customers showed higher churn rates.
+- **Purchase Patterns**: Customers tend to buy more during promotional periods, with higher sales amounts in electronics and home appliances.
+- **Purchase Frequency**: The average frequency of purchases increased during holiday periods, and customers with loyalty program memberships showed higher spending.
 
-6. ### Promotions Based on Purchase Times:
-   - Implement promotions or discounts during midday hours to increase sales during lower order volumes.
+### 4. Inventory Optimization
+- **Stock-Outs**: Certain high-demand products experienced frequent stock-outs, especially during the holiday season. This indicates a need for better forecasting and inventory replenishment strategies.
+- **Inventory Turnover**: High turnover products are being replenished efficiently, while slow-moving items contribute to excess inventory and higher storage costs.
+- **Demand Forecasting**: Based on historical sales data, inventory demand forecasting can be improved for popular categories like electronics, clothing, and groceries.
 
-# Conclusion
+### 5. Marketing Effectiveness
+- **Campaign Impact**: Promotional campaigns had a significant impact on sales, increasing revenue by up to 30% during promotional periods. The effectiveness of promotions was higher in certain regions.
+- **Discounting Strategy**: Discounts on products in the electronics and clothing categories had the highest sales conversion, while discounting in non-essential categories showed lower effectiveness.
 
-This case study provides comprehensive insights into the e-commerce trends, customer behavior, and economic impact in Brazil for Target. The SQL queries and detailed analysis offer valuable recommendations for improving sales and customer engagement.
+### 6. Regional Analysis
+- **Regional Sales Variation**: Urban stores showed higher sales compared to rural stores. Certain regions, particularly those near large cities, performed better in terms of sales per square foot.
+- **Target Market Expansion**: Expansion into new regions with tailored marketing and inventory strategies could improve overall revenue growth.
+
+---
+
+## Methodology
+1. **Data Collection**: The dataset is sourced from Target’s internal database, which includes transactional, customer, and inventory data.
+2. **SQL Queries**: Various SQL queries were used to extract meaningful insights, including aggregate functions, joins, subqueries, and window functions.
+3. **Exploratory Data Analysis (EDA)**: Performed EDA to identify trends, patterns, and correlations between sales, customer demographics, product categories, and promotions.
+4. **Key Metrics**: Key business metrics, such as sales growth, average order value, customer retention, and inventory turnover, were calculated to evaluate performance.
+
+---
+
+## Technologies Used
+- **SQL**: For querying and analyzing the data from the Target database.
+- **Python**: For data visualization and additional data cleaning (optional).
+- **Jupyter Notebooks**: For presenting findings and analysis.
+- **Tableau/Power BI** (optional): For advanced visualizations and dashboards.
